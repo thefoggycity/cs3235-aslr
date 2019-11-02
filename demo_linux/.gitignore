@@ -1,7 +1,12 @@
+
+# Project specific
+sysaddr*
+
 ######################
 ##   C GITIGNORE    ##
 ######################
 *.o
+*.so
 
 ######################
 ## PYTHON GITIGNORE ##

@@ -1,1 +1,7 @@
 .vscode/
+
+# Project specific
+sysaddr*
+*.out
+*.o
+measure
