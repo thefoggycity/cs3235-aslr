@@ -23,12 +23,12 @@ import time
 #####################
 
 x = ctypes.CDLL('./demo_linux/libASLRTimingAtk.so')
-cFunc = x.libAgent
+cFunc = x._Z8libAgentPim
 cFunc.argtypes = ctypes.POINTER(ctypes.c_int), ctypes.c_size_t
 cFunc.restype = None
 
 def runAttack() :
-    ptrRetBuff = (ctypes.c_int * 5)()
+    ptrRetBuff = (ctypes.c_int * 0x80000)()
     cFunc(ptrRetBuff, len(ptrRetBuff))
     return list(ptrRetBuff)
 
@@ -39,8 +39,8 @@ def runAttack() :
 def axesSetup(a):
     a.get_xaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, pos: "0x%x" % int(x)))
-    a.set_xlim([0,6])
-    a.set_ylim([-1,10])
+    a.set_xlim([0x80000, 0xfffff])
+    a.set_ylim([-1,30000])
 
 root = tkinter.Tk()
 root.wm_title("ASLR Attack Demo")
@@ -86,7 +86,7 @@ frmCounter = 0
 
 def updPlot():
     global frmCounter
-    xData = np.linspace(1, 5, 5)
+    xData = np.linspace(0x80000, 0xfffff, 0x80000)
     yData = runAttack()
     subp.scatter(xData, yData, c='b', marker='.')
     canvas.draw()
@@ -98,7 +98,7 @@ def updPlotMulti():
         updPlot()
         time.sleep(1)
 
-btnPlot = tkinter.Button(master=root, textvariable=btnPlotText, command=updPlotMulti)
+btnPlot = tkinter.Button(master=root, textvariable=btnPlotText, command=updPlot)
 btnPlot.pack(side=tkinter.BOTTOM)
 
 

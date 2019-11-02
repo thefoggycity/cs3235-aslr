@@ -18,7 +18,9 @@
 void libAgent(int retBuff[], size_t buffSize)
 {
     // Dummy code
-    srand(time(NULL));
+    // srand(time(NULL));
+    runMeasure();
     for (int i = 0; i < buffSize; i++)
-        retBuff[i] = rand() % 10;
+        // retBuff[i] = rand() % 10;
+        retBuff[i] = meas[i];
 }

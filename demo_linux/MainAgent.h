@@ -15,4 +15,6 @@
 #include <stdint.h>
 #include <time.h>
 
+#include "AslrAttack.h"
+
 #endif // _MAIN_AGENT_H_
