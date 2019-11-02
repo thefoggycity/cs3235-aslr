@@ -24,11 +24,13 @@
 
 #include <sys/mman.h>
 
+#ifndef __USE_GNU
 #define __USE_GNU
+#endif
 
 #include "rdtsc.h"
 
-extern int meas[0x80000];
+extern uint64_t meas[0x80000];
 extern int runMeasure(void);
 
 #endif // _ASLR_ATTACK_H_

@@ -40,7 +40,7 @@ def axesSetup(a):
     a.get_xaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, pos: "0x%x" % int(x)))
     a.set_xlim([0x80000, 0xfffff])
-    a.set_ylim([-1,30000])
+    a.set_ylim([4500,4800])
 
 root = tkinter.Tk()
 root.wm_title("ASLR Attack Demo")
@@ -81,24 +81,32 @@ btnReset.pack(side=tkinter.BOTTOM)
 # Plot Button
 
 btnPlotText = tkinter.StringVar()
-btnPlotText.set("Plot")
+btnPlotText.set("Attack")
 frmCounter = 0
 
-def updPlot():
+def updPlot(xData, yData):
     global frmCounter
-    xData = np.linspace(0x80000, 0xfffff, 0x80000)
-    yData = runAttack()
+    subp.clear()
+    axesSetup(subp)
     subp.scatter(xData, yData, c='b', marker='.')
     canvas.draw()
-    btnPlotText.set("Plot again")
     frmCounter += 1
 
-def updPlotMulti():
-    for _ in range(3):
-        updPlot()
-        time.sleep(1)
+def updPlotMin():
+    numRounds = 3
+    xData = np.linspace(0x80000, 0xfffff, 0x80000)
+    yData = runAttack()
+    updPlot(xData, yData)
+    for _ in range(numRounds - 1):
+        yTmp = runAttack()
+        for i in range(len(yData)) :
+            if yData[i] > yTmp[i] : 
+                yData[i] = yTmp[i]
+        del yTmp
+        updPlot(xData, yData)
+    btnPlotText.set("Attack Again")
 
-btnPlot = tkinter.Button(master=root, textvariable=btnPlotText, command=updPlot)
+btnPlot = tkinter.Button(master=root, textvariable=btnPlotText, command=updPlotMin)
 btnPlot.pack(side=tkinter.BOTTOM)
 
 
