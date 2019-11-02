@@ -78,6 +78,43 @@ def resetPlot():
 btnReset = tkinter.Button(master=root, text="Reset", command=resetPlot)
 btnReset.pack(side=tkinter.BOTTOM)
 
+# Plot System Addresses Button
+
+def readSysAddr():
+    # Copied from the first half of addrParse.py
+    # As reading /proc/kallsyms requires root priviledges (otherwise 
+    # addresses will be all zeros), the program reads a txt file 
+    # obtained by user (with sudo or root identity).
+
+    addrString = ""
+    f = open("sysaddr.txt", "r")
+    content = f.readline()
+
+    sysaddrlist = []
+    while content:
+        fileAddr = content.strip()[0:13] + "000"
+        if fileAddr == addrString or int(content.strip()[0:16], 16) < 0xffffffff80000000:
+            content = f.readline()
+            continue
+        else:
+            sysaddrlist.append(fileAddr)
+            content = f.readline()
+
+    sysaddrlist = set(sysaddrlist)
+    sysaddrlist = list(sysaddrlist)
+    sysaddrlist.sort()
+
+    return [int(a[8:], 16) >> 12 for a in sysaddrlist]
+
+def pltSysAddr() :
+    xData = readSysAddr()
+    yData = [4501 for _ in range(len(xData))]
+    subp.scatter(xData, yData, c='r', marker='.')
+    canvas.draw()
+
+btnPlot = tkinter.Button(master=root, text="Plot System Addresses", command=pltSysAddr)
+btnPlot.pack(side=tkinter.BOTTOM)
+
 # Plot Button
 
 btnPlotText = tkinter.StringVar()
