@@ -146,5 +146,17 @@ def updPlotMin():
 btnPlot = tkinter.Button(master=root, textvariable=btnPlotText, command=updPlotMin)
 btnPlot.pack(side=tkinter.BOTTOM)
 
+# Load from parsed CSV results
+
+def updPlotCSV():
+    # Open the file and load result into xData and yData for scatter
+    # xData = (address >> 12) & 0xfffff
+    # yData = timing
+    # Then call update plot
+    # updPlot(xData, yData)
+    pass
+
+btnPlot = tkinter.Button(master=root, text="Load from CSV", command=updPlotCSV)
+btnPlot.pack(side=tkinter.BOTTOM)
 
 tkinter.mainloop()
