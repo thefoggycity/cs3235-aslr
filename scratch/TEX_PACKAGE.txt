@@ -1,8 +1,0 @@
-If you work on linux desktop, you may prefer to search for 
-	texlive-tikzposter
-to install the necessary poster document class.
-
-On Windows, there should be TeX package manager for installation of extra document classes.
-
-Alternatively, the tikzposter.zip contains the class definition and may be used.
-
