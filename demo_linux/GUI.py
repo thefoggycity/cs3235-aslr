@@ -17,6 +17,7 @@ import numpy as np
 import ctypes
 import ctypes.util
 import time
+import csv
 
 #####################
 ## LOAD ATTACK DLL ##
@@ -26,6 +27,7 @@ x = ctypes.CDLL('./demo_linux/libASLRTimingAtk.so')
 cFunc = x._Z8libAgentPim
 cFunc.argtypes = ctypes.POINTER(ctypes.c_int), ctypes.c_size_t
 cFunc.restype = None
+# cFunc = None
 
 def runAttack() :
     ptrRetBuff = (ctypes.c_int * 0x80000)()
@@ -150,11 +152,25 @@ btnPlot.pack(side=tkinter.BOTTOM)
 
 def updPlotCSV():
     # Open the file and load result into xData and yData for scatter
-    # xData = (address >> 12) & 0xfffff
-    # yData = timing
-    # Then call update plot
-    # updPlot(xData, yData)
-    pass
+    f = open("tsx_parsed_output0.csv",'r')
+    csvr = csv.reader(f)
+    knlAddr = []; knlTime = []
+    nonAddr = []; nonTime = []
+    for l in csvr :
+        if csvr.line_num <= 2 : continue
+        nonAddr.append(int(l[0][8:13], 16))
+        nonTime.append(int(l[1].strip()))
+        if len(l) == 4 :
+            knlAddr.append(int(l[2][8:13], 16))
+            knlTime.append(int(l[3].strip()))
+    del csvr; f.close()
+    subp.clear()
+    axesSetup(subp)
+    subp.set_ylim([0,500])
+    subp.scatter(nonAddr, nonTime, c='b', marker='.')
+    subp.scatter(knlAddr, knlTime, c='r', marker='.')
+    canvas.draw()
+    
 
 btnPlot = tkinter.Button(master=root, text="Load from CSV", command=updPlotCSV)
 btnPlot.pack(side=tkinter.BOTTOM)
