@@ -18,12 +18,17 @@ import ctypes
 import ctypes.util
 import time
 import csv
+import os
 
 #####################
 ## LOAD ATTACK DLL ##
 #####################
 
-x = ctypes.CDLL('./demo_linux/libASLRTimingAtk.so')
+temp = os.path.abspath(__file__)
+temp = os.path.realpath(temp)
+temp = os.path.dirname(temp)
+temp = os.path.join(temp, "libASLRTimingAtk.so")
+x = ctypes.CDLL(temp)
 cFunc = x._Z8libAgentPim
 cFunc.argtypes = ctypes.POINTER(ctypes.c_int), ctypes.c_size_t
 cFunc.restype = None
