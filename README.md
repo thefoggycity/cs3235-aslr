@@ -4,7 +4,7 @@ CS3235 AY1920S1 Project
 
 ## Note
 
-The python scripts require python 3.6 and above to run. Make sure you have Tkinter and Matplotlib libraries installed.
+The python scripts require `python 3.6` and above to run. Make sure you have `Tkinter` and `Matplotlib` libraries installed.
 
 ## Demonstration on Linux
 
